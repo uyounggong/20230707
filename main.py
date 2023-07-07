@@ -8,21 +8,22 @@ def update():
     version_url = "https://uyounggong.github.io/20230707/version.txt"  # URL of your app's latest version number
     response = urllib.request.urlopen(version_url)
     latest_version = response.read().decode('utf-8').strip()
+    print(latest_version)
 
     with open('version.txt', 'r') as file:
         current_version = file.read().replace('\n', '')
-
+    print(current_version)
     if current_version != latest_version:
         print("New update available! Updating...")
-        exe_url = f"https://github.com/uyounggong/20230707/releases/download/v{latest_version}/main_{latest_version}.exe"
+        exe_url = f"https://github.com/uyounggong/20230707/releases/download/v{latest_version}/main.exe"
         urllib.request.urlretrieve(exe_url, f'new_main_{latest_version}.exe')
 
         # Remove the old executable file
-        os.remove(f'main_{current_version}.exe')
-
-        # Rename the new file to replace the old one
-        os.rename(f'new_main_{latest_version}.exe', f'main_{latest_version}.exe')
-
+        os.remove(f'main.exe')
+    #
+    #     # Rename the new file to replace the old one
+        os.rename(f'new_main_{latest_version}.exe', f'main.exe')
+    #
         # Update version file locally
         with open('version.txt', 'w') as file:
             file.write(latest_version)
