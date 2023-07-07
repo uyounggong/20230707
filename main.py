@@ -12,24 +12,21 @@ def update():
     with open('version.txt', 'r') as file:
         current_version = file.read().replace('\n', '')
 
-    print(current_version)
-    print(latest_version)
     if current_version != latest_version:
         print("New update available! Updating...")
-        exe_url = f"https://github.com/uyounggong/20230707/releases/download/v{latest_version}/main.exe"
-        urllib.request.urlretrieve(exe_url, 'new_main.exe')
+        exe_url = f"https://github.com/uyounggong/20230707/releases/download/v{latest_version}/main_{latest_version}.exe"
+        urllib.request.urlretrieve(exe_url, f'new_main_{latest_version}.exe')
 
-        # Rename the current exe file (this will be our backup)
-        os.rename('main.exe', f'main_{current_version}.exe')
+        # Remove the old executable file
+        os.remove(f'main_{current_version}.exe')
 
-        # Rename the new exe file to main.exe
-        os.rename('new_main.exe', 'main.exe')
+        # Rename the new file to replace the old one
+        os.rename(f'new_main_{latest_version}.exe', f'main_{latest_version}.exe')
 
         # Update version file locally
         with open('version.txt', 'w') as file:
             file.write(latest_version)
 
-        # The following part might not work as expected as we discussed earlier.
         # Restart the program
         python = sys.executable
         os.execl(python, python, *sys.argv)
